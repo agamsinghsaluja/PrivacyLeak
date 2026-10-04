@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "packages/scanner/src",
+    "outDir": "dist/scanner",
+    "declaration": true
+  },
+  "include": ["packages/scanner/src/**/*.ts"]
+}
