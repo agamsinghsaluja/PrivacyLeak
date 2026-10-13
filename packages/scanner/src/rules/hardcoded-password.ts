@@ -1,6 +1,7 @@
 import traverse from "@babel/traverse";
 import * as t from "@babel/types";
 import type { AstRule, Finding } from "../types";
+import { maskAssignment } from "../redaction";
 
 const passwordNames = new Set([
   "password", "passwd", "dbpassword", "databasepassword", "smtppassword"
@@ -24,14 +25,14 @@ export const hardcodedPasswordRule: AstRule = {
 
         findings.push({
           ruleId: "PL001",
+          type: "EXPOSED_CREDENTIAL",
           file,
           line: location.line,
           column: location.column + 1,
           severity: "medium",
           confidence: "medium",
           message: "Possible hardcoded password.",
-          // Never copy the literal value into a finding.
-          evidence: `${id.name} = "[REDACTED]"`,
+          evidence: maskAssignment(id.name, init.value),
           remediation: "Review whether the value is a credential. If exposed, " +
             "replace it and load the replacement from secure runtime configuration."
         });

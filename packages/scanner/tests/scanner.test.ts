@@ -32,8 +32,15 @@ describe("PL001", () => {
     expect(result.findings.every(f => f.evidence.includes("[REDACTED]"))).toBe(true);
   });
 
-  it("documents that object properties are not implemented yet", () => {
-    expect(scanSource('const config = { password: "fixture" };', "demo.ts").findings).toHaveLength(0);
+  it("flags credentials in object properties with PL002", () => {
+    const result = scanSource('const config = { password: "fixture" };', "demo.ts");
+    expect(result.findings).toHaveLength(1);
+    expect(result.findings[0]).toMatchObject({
+      ruleId: "PL002",
+      type: "EXPOSED_CREDENTIAL",
+      severity: "high"
+    });
+    expect(result.findings[0].evidence).toContain("[REDACTED]");
   });
 });
 

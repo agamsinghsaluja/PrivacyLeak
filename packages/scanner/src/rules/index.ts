@@ -1,6 +1,10 @@
 import type { AstRule } from "../types";
 import { hardcodedPasswordRule } from "./hardcoded-password";
+import { objectPropertyCredentialRule } from "./object-property-credential";
 
 // Only trusted rules shipped with PrivacyLeak are registered here.
 // Never import or execute rules from an uploaded project.
-export const rules: readonly AstRule[] = [hardcodedPasswordRule];
+export const rules: readonly AstRule[] = [
+  hardcodedPasswordRule,
+  objectPropertyCredentialRule
+];

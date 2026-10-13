@@ -1,15 +1,30 @@
 import type { File } from "@babel/types";
 
+export type FindingType =
+  | "EXPOSED_SECRET"
+  | "EXPOSED_CREDENTIAL"
+  | "SENSITIVE_CONFIG"
+  | "PRIVATE_KEY"
+  | "UNPROTECTED_ENDPOINT"
+  | "MISSING_AUTHENTICATION"
+  | "MISSING_AUTHORIZATION"
+  | "SENSITIVE_DATA_EXPOSURE";
+
+export type Severity = "low" | "medium" | "high" | "critical";
+export type Confidence = "low" | "medium" | "high";
+
 export interface Finding {
   ruleId: string;
+  type: FindingType;
   file: string;
   line: number;
   column: number;
-  severity: "low" | "medium" | "high";
-  confidence: "low" | "medium" | "high";
+  severity: Severity;
+  confidence: Confidence;
   message: string;
   evidence: string;
   remediation: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface Diagnostic {
